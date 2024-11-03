@@ -1,10 +1,3 @@
-/* Anggota Kelompok Alpro 2
-1. Achmad Rakhis Yudha 2802521371
-2. Iqbal Kevin Kyle 2802523622
-3. Marcello Aqeel Pane 2802522166
-4. Shevanya Nagita Tesalonika Winowoda 2802522664
-5. Zahra Illiyin 2802519745
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +9,7 @@
 #define database "databuku.txt"
 
 typedef struct {
-    char bookCode[maxCode]; //size is defined previously
+    char bookCode[maxCode]; // size is defined previously
     char bookTitle[maxString];
     char bookGenre[maxString];
     int bookPrice;
@@ -31,34 +24,38 @@ typedef struct {
 
 bookStruct books[maxBooks];
 historyStruct history[maxHistory];
-int bookCount = 0; //counting variables to keep track of entries in each array
+int bookCount = 0; // counting variables to keep track of entries in each array
 int historyCount = 0;
 
-void loadDataBuku() { //Fungsi membaca file databuku.txt
-    FILE *file = fopen(database, "r"); //command to read from the .txt
+// Judul Fungsi: Fungsi membaca file databuku.txt
+// Isi Fungsi: This function reads the contents of the databuku.txt file and stores the data into the books array.
+void loadDataBuku() { 
+    FILE *file = fopen(database, "r"); // command to read from the .txt
     if (file == NULL) {
-        printf("File tidak ditemukan.\n"); //error message if the user wanted to call from non-existent file
+        printf("File tidak ditemukan.\n"); // error message if the user wanted to call from non-existent file
         return;
     }
-    while (!feof(file) && bookCount < maxBooks) { //scan until the end of the file
-        fscanf(file, "%[^|]|%[^|]|%[^|]|%d\n", //each data is separated by | and assigned to respective variables
+    while (!feof(file) && bookCount < maxBooks) { // scan until the end of the file
+        fscanf(file, "%[^|]|%[^|]|%[^|]|%d\n", // each data is separated by | and assigned to respective variables
         books[bookCount].bookCode, 
         books[bookCount].bookTitle,
         books[bookCount].bookGenre,
         &books[bookCount].bookPrice);
-        bookCount++; //counter for each entities in the books array
+        bookCount++; // counter for each entity in the books array
     }
     fclose(file);
 }
 
-void saveAndExit() { //Fungsi menulis di file databuku.txt
+// Judul Fungsi: Fungsi menulis di file databuku.txt
+// Isi Fungsi: This function writes the contents of the books array back to the databuku.txt file when exiting.
+void saveAndExit() { 
     FILE *file = fopen(database, "w");
     if (file == NULL) {
         printf("Error, file tidak dapat dibuka.\n");
         return;
     }
-    for (int i = 0; i < bookCount; i++) { //counter made to be dynamic as the program can delete and add entry
-        fprintf(file, "%s|%s|%s|%d\n", //fprintf to write to the file
+    for (int i = 0; i < bookCount; i++) { // counter made to be dynamic as the program can delete and add entry
+        fprintf(file, "%s|%s|%s|%d\n", // fprintf to write to the file
         books[i].bookCode,
         books[i].bookTitle,
         books[i].bookGenre,
@@ -67,6 +64,8 @@ void saveAndExit() { //Fungsi menulis di file databuku.txt
     fclose(file);
 }
 
+// Judul Fungsi: Fungsi untuk menampilkan riwayat transaksi
+// Isi Fungsi: This function displays the transaction history stored in the history array.
 void viewHistory() {
     printf("Riwayat transaksi:\n");
     for (int i = 0; i < historyCount; i++) {
@@ -77,6 +76,8 @@ void viewHistory() {
     }
 }
 
+// Judul Fungsi: Fungsi untuk menampilkan daftar seluruh buku
+// Isi Fungsi: This function displays all the books currently in the books array.
 void viewBooks() {
     printf("Daftar seluruh buku:\n");
     for (int i = 0; i < bookCount; i++) {
@@ -88,7 +89,8 @@ void viewBooks() {
     }
 }
 
-// Fungsi untuk menambah buku baru ke daftar buku
+// Judul Fungsi: Fungsi untuk menambah buku baru ke daftar buku
+// Isi Fungsi: This function allows the user to input details for a new book and adds it to the books array.
 void addBook() {
     if (bookCount >= maxBooks) {
         printf("Buku penuh, tidak bisa menambah buku lagi.\n");
@@ -106,7 +108,9 @@ void addBook() {
     printf("Buku berhasil ditambahkan.\n");
 }
 
-// Fungsi untuk melakukan transaksi (menghapus buku dari daftar dan menambahkannya ke history)
+// Judul Fungsi: Fungsi untuk melakukan transaksi
+// Isi Fungsi: This function processes a transaction by removing a selected book from the books array 
+// and adding it to the history array.
 void processTransaction() {
     if (bookCount == 0) {
         printf("Tidak ada buku di database untuk transaksi.\n");
@@ -118,16 +122,16 @@ void processTransaction() {
         printf("Pilih nomor buku untuk melakukan transaksi: ");
         scanf("%d", &nomor);
     } while (nomor < 1 || nomor > bookCount);
-    nomor--; // Sesuaikan dengan indeks array
+    nomor--; // Adjust for zero-based index
 
-    // Tambahkan buku yang dipilih ke history
+    // Add the selected book to history
     strcpy(history[historyCount].historyCode, books[nomor].bookCode);
     strcpy(history[historyCount].historyTitle, books[nomor].bookTitle);
     strcpy(history[historyCount].historyGenre, books[nomor].bookGenre);
     history[historyCount].historyPrice = books[nomor].bookPrice;
     historyCount++;
 
-    // Hapus buku yang dipilih dari daftar buku
+    // Remove the selected book from the books list
     for (int i = nomor; i < bookCount - 1; i++) {
         books[i] = books[i + 1];
     }
@@ -136,6 +140,8 @@ void processTransaction() {
     printf("Transaksi berhasil. Buku dipindahkan ke riwayat transaksi.\n");
 }
 
+// Judul Fungsi: Fungsi untuk menghapus riwayat transaksi
+// Isi Fungsi: This function allows the user to delete a specific entry from the transaction history.
 void deleteHistory() {
     if (historyCount == 0) {
         printf("Tidak ada riwayat transaksi yang dapat dihapus.\n");
@@ -156,6 +162,9 @@ void deleteHistory() {
     printf("Data berhasil dihapus dari riwayat transaksi.\n");
 }
 
+// Judul Fungsi: Fungsi utama untuk menjalankan program
+// Isi Fungsi: The main function runs the bookstore application, displaying a menu 
+// and allowing users to perform various operations until they choose to exit.
 int main() {
     loadDataBuku();
     int menu; 
@@ -194,7 +203,8 @@ int main() {
                 printf("Buku berhasil dihapus.\n");
             }
             break;
-        case 7: saveAndExit();
+        case 7: 
+            saveAndExit();
             printf("Data berhasil disimpan.\n");
             break;
         default:
