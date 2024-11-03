@@ -1,3 +1,11 @@
+/* Anggota Kelompok Alpro 2
+1. Achmad Rakhis Yudha 2802521371
+2. Iqbal Kevin Kyle 2802523622
+3. Marcello Aqeel Pane 2802522166
+4. Shevanya Nagita Tesalonika Winowoda 2802522664
+5. Zahra Illiyin 2802519745
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
