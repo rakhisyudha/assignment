@@ -16,7 +16,7 @@
 #define database "databuku.txt"
 
 typedef struct {
-    char bookCode[maxCode];
+    char bookCode[maxCode]; //size is defined previously
     char bookTitle[maxString];
     char bookGenre[maxString];
     int bookPrice;
@@ -31,34 +31,34 @@ typedef struct {
 
 bookStruct books[maxBooks];
 historyStruct history[maxHistory];
-int bookCount = 0;
+int bookCount = 0; //counting variables to keep track of entries in each array
 int historyCount = 0;
 
-void loadDataBuku() { 
-    FILE *file = fopen(database, "r");
+void loadDataBuku() { //Fungsi membaca file databuku.txt
+    FILE *file = fopen(database, "r"); //command to read from the .txt
     if (file == NULL) {
-        printf("File tidak ditemukan.\n");
+        printf("File tidak ditemukan.\n"); //error message if the user wanted to call from non-existent file
         return;
     }
-    while (!feof(file) && bookCount < maxBooks) {
-        fscanf(file, "%[^|]|%[^|]|%[^|]|%d\n",
+    while (!feof(file) && bookCount < maxBooks) { //scan until the end of the file
+        fscanf(file, "%[^|]|%[^|]|%[^|]|%d\n", //each data is separated by | and assigned to respective variables
         books[bookCount].bookCode, 
         books[bookCount].bookTitle,
         books[bookCount].bookGenre,
         &books[bookCount].bookPrice);
-        bookCount++;
+        bookCount++; //counter for each entities in the books array
     }
     fclose(file);
 }
 
-void saveAndExit() {
+void saveAndExit() { //Fungsi menulis di file databuku.txt
     FILE *file = fopen(database, "w");
     if (file == NULL) {
         printf("Error, file tidak dapat dibuka.\n");
         return;
     }
-    for (int i = 0; i < bookCount; i++) {
-        fprintf(file, "%s|%s|%s|%d\n",
+    for (int i = 0; i < bookCount; i++) { //counter made to be dynamic as the program can delete and add entry
+        fprintf(file, "%s|%s|%s|%d\n", //fprintf to write to the file
         books[i].bookCode,
         books[i].bookTitle,
         books[i].bookGenre,
